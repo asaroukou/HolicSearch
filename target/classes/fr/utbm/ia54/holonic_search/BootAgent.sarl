@@ -1,0 +1,62 @@
+/** 
+ * 
+ */
+package fr.utbm.ia54.holonic_search
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import java.io.File
+
+/** 
+ * @author ambyassa
+ * 
+ */
+agent BootAgent {
+	uses Lifecycle, Logging
+	
+	on Initialize {
+		info("The agent was started.")
+		spawn(SearchManager)
+	}
+}
+
+agent SearchManager {
+	uses Lifecycle, Logging
+	
+	var path = '/home/users/ambyassa/sarl_dir'
+	
+	on Initialize {
+		
+		loggingName = "SearchManager"
+		info("The manager start.")
+		spawn(SearchAgent, path)
+	}
+	
+	on ParticipantJoined {
+		info("participant join: "+occurrence.source.UUID)
+	}
+	
+	
+}
+
+agent SearchAgent {
+	uses Lifecycle, Logging
+	
+	on Initialize {
+		loggingName = "SearchAgent"
+		info(occurrence.source)
+	}
+}
